@@ -27,13 +27,6 @@ export class SensorsDataComponent implements OnInit {
   //   this.disabled = true;
   // }
 
-  // // Two way databinding - nicht so
-  // public title = 'I am a text'
-
-  // updateTitel(event: any) {
-  //   this.title = event.target.value;
-  // }
-
   // //Structural Directives
   // public displaySection = true;
 
