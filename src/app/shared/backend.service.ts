@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 import { Sensor } from '../Sensor';
 import { Sensorendata } from '../Sensorendata';
 import { SensorendataResponse } from '../SensorendataResponse';
@@ -12,6 +12,8 @@ import { StoreService } from './store.service';
 export class BackendService {
 
   constructor(private storeService: StoreService, private http: HttpClient) { }
+
+  public sensorsChanged = new Subject<true>();
 
   sensoren: Sensor[] = [];
 
@@ -27,5 +29,10 @@ export class BackendService {
       return { ...data, sensor }
     });
     this.storeService.sensorenDaten = sensorenData;
+  }
+
+  public async addSensorsData(sensorenData: Sensorendata[]) {
+    await firstValueFrom(this.http.post('http://localhost:5000/sensorsData', sensorenData));
+    await this.getSensorenDaten();
   }
 }

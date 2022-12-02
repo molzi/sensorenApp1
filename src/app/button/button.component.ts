@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StoreService } from '../shared/store.service';
 
 @Component({
   selector: 'app-button',
@@ -11,5 +12,4 @@ export class ButtonComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

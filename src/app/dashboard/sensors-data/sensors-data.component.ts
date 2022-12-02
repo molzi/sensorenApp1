@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { BackendService } from 'src/app/shared/backend.service';
+import { StoreService } from 'src/app/shared/store.service';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
+import { Sensorendata } from 'src/app/Sensorendata';
+import { SensorPosition } from 'src/app/Sensor';
+
 
 @Component({
   selector: 'app-sensors-data',
@@ -7,33 +14,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SensorsDataComponent implements OnInit {
 
-  constructor() { }
+  constructor(public storeService: StoreService, private backendService: BackendService) { }
 
-  // //Interpolation
-  // public firstName = 'Tom';
-  // public lastName = 'Turbo';
-  // public number1 = 1;
-  // public number2 = 2;
+  displayedColumns: string[] = ['name', 'date', 'temperature', 'humidity', 'location', 'position'];
+  dataSource!: MatTableDataSource<Sensorendata>;
 
-  // //Property binding
-  // public disabled = false;
-  // public imageUrl = 'https://www.jotun-austria.at/wp-content/uploads/2018/03/Pinguin-Spirit.jpg';
-  // public imageName = 'Pinguin';
+  SensorPosition = SensorPosition;
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  // // Event binding
-  // public disabled = false;
-  // onClick() {
-  //   this.disabled = true;
-  // }
+  async ngOnInit() {
+    this.backendService.sensorsChanged.subscribe(()=>{
+      this.refreshData();
+    });
+    await this.backendService.getSensoren();
+    this.refreshData();
+  }
 
-  // //Structural Directives
-  // public displaySection = true;
+  private async refreshData(){
+    await this.backendService.getSensorenDaten();
 
-  // public list = [
-  //   {name: 'Julia', age: 27},
-  //   {name: 'Tobias', age: 26}
-  // ]
+    this.dataSource = new MatTableDataSource(this.storeService.sensorenDaten);
+    this.dataSource.paginator = this.paginator;
 
-  ngOnInit(): void {}
+  }
 }

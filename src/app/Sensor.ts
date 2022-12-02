@@ -1,5 +1,5 @@
 export interface Sensor {
-    id: number;
+    id?: number;
     name: string;
     location: string;
     aktice: boolean;

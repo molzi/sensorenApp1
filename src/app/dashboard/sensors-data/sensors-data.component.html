@@ -1,21 +1,50 @@
-<p>sensors-data works!</p>
+<div class="mat-elevation-z8 m-2">
+  <table mat-table [dataSource]="dataSource" style="width: 100%">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Sensor </th>
+      <td mat-cell *matCellDef="let element"> {{element.sensor?.name}} </td>
+    </ng-container>
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+    </ng-container>
+    <ng-container matColumnDef="temperature">
+      <th mat-header-cell *matHeaderCellDef> Temperature </th>
+      <td mat-cell *matCellDef="let element" [ngClass]="{
+        'text-info': element.temperature < 10,
+        'text-warning': element.temperature >= 10 && element.temperature < 20,
+        'text-danger': element.temperature >= 20}">
+        <i class="bi " [ngClass]="{
+          'bi-thermometer-low': element.temperature < 10,
+          'bi-thermometer-half': element.temperature >= 10 && element.temperature < 20,
+          'bi-thermometer-high': element.temperature >= 20}"></i> {{element.temperature}}</td>
+    </ng-container>
+    <ng-container matColumnDef="humidity">
+      <th mat-header-cell *matHeaderCellDef> Humidity </th>
+      <td mat-cell *matCellDef="let element" [ngClass]="{
+        'text-danger': element.humidity < 40,
+        'text-warning': element.humidity >= 40 && element.humidity < 80,
+        'text-info': element.humidity >= 80}">
+        <i class="bi " [ngClass]="{
+          'bi-cloud': element.humidity < 40,
+          'bi-cloud-rain': element.humidity >= 40 && element.humidity < 80,
+          'bi-cloud-rain-heavy': element.humidity >= 80}"></i> {{element.humidity}}</td>
+    </ng-container>
+    <ng-container matColumnDef="location">
+      <th mat-header-cell *matHeaderCellDef> Location </th>
+      <td mat-cell *matCellDef="let element"> {{element.sensor?.location}} </td>
+    </ng-container>
 
-<!-- String interpolation -->
-<!-- <p>{{firstName}}</p>
-<p>{{firstName}} {{lastName}}</p>
-<p>{{number1 + number2}}</p> -->
-
-<!-- Property Binding -->
-<!-- <button [disabled]="disabled">Disabled button</button>
-<img [src]="imageUrl" [alt]="imageName" width="500" height="600"> -->
-
-<!-- Event Binding
-<button [disabled]="disabled" (click)="onClick()">I am a button</button> -->
-
-<!-- *ngFor und *ngIf -->
-<!-- <div *ngIf="displaySection">
-    <p>Test</p>
-    <p>Diese Section war gerade nicht da</p>
-
-    <p *ngFor="let person of list">{{person.name}}</p>
-</div> -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> Position </th>
+      <td mat-cell *matCellDef="let element"> {{SensorPosition[element.sensor?.position]}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
